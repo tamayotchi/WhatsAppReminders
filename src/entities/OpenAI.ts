@@ -27,7 +27,11 @@ interface CreateReminderOpenAI {
   recurrence?: RecurrencePayload;
 }
 
-const openai = new OpenAI();
+const openai = new OpenAI({
+  apiKey: process.env.DEEPSEEK_API_KEY,
+  baseURL: "https://api.deepseek.com",
+});
+
 const INSTRUCTIONS = `You are an expert virtual assistant specialized in managing reminders. Use the supplied tools to assist the user.
 This assistant is designed to receive user messages with the intention of creating reminders using the createReminder tool.
 The function requires two mandatory parameters: the content of the reminder and the date and time for the reminder, which could be for a one-time reminder or the starting date for recurring reminders.
@@ -103,7 +107,7 @@ const TOOLS: ChatCompletionTool[] = [
 const getChatCompletion = async (messages: ChatCompletionMessageParam[]) => {
   const final_response = await openai.chat.completions.create({
     messages,
-    model: "gpt-4o-mini-2024-07-18",
+    model: "deepseek-chat",
     tools: TOOLS,
     // tool_choice: "auto",
     // stream: true,
